@@ -1,0 +1,34 @@
+# Node modules
+node_modules/
+
+# Env files
+.env
+.env.local
+.env.*.local
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+pnpm-debug.log*
+
+# Build output
+dist/
+build/
+out/
+
+# TypeScript compiled files
+*.js
+*.js.map
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Next.js / React
+.next/
+storybook-static/
+
+# Test coverage
+coverage/
