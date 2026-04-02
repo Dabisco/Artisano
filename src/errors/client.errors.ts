@@ -27,3 +27,10 @@ export class ValidationError extends BaseError {
     this.name = "ValidationError";
   }
 }
+
+export class UnauthorizedError extends BaseError {
+  constructor(message: string, context?: string, details?: any) {
+    super(message, 401, true, context, details);
+    this.name = "UnauthorizedError";
+  }
+}

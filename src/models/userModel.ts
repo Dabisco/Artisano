@@ -14,7 +14,9 @@ export class userModel {
     const { data: record, error } = await supabase
       .from("users")
       .select("*")
-      .or(`username.eq.${identifier},phone_number.eq.${identifier}`)
+      .or(
+        `username.eq.${identifier},phone_number.eq.${identifier},id.eq.${identifier}`,
+      )
       .maybeSingle();
 
     if (error)

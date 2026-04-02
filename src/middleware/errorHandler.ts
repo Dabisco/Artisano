@@ -9,6 +9,7 @@ export const errorHandler = (
 ) => {
   // If it's a known error
   if (error instanceof BaseError && error.isOperational) {
+    console.warn("Operational error: ", error);
     return res.status(error.statusCode).json({
       success: false,
       message: error.message,

@@ -2,6 +2,7 @@ import express, { Request, Response } from "express";
 import cors from "cors";
 import authRoutes from "@/routes/authRoutes.js";
 import { errorHandler } from "@/middleware/errorHandler.js";
+import cookieParser from "cookie-parser";
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -9,6 +10,7 @@ const PORT = process.env.PORT || 3000;
 // Middleware
 app.use(cors()); // Allow cross-origin requests (e.g., from your frontend)
 app.use(express.json()); // Parse incoming JSON payloads
+app.use(cookieParser()); // Parse incoming cookie payloads
 
 // Basic Health Check Route
 app.get("/", (req: Request, res: Response) => {

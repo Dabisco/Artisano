@@ -3,17 +3,27 @@ import { verificationModel } from "@/models/verificationModel.js";
 import { validateOTP } from "./validateOTP.js";
 import { NotFoundError, DatabaseError } from "@/errors/index.js";
 
-export const verifyOTP = async (user_id: string, otp: string) => {
+export const verifyOTP = async (
+  user_id: string,
+  otp: string,
+): Promise<boolean> => {
   const record = await verificationModel.getOTPByUserId(user_id);
   if (!record) {
-    throw new NotFoundError("No OTP found for this user", "verifyOTP");
+    throw new NotFoundError(
+      "No OTP found for this user",
+      "otpService.verifyOTP",
+    );
   }
   await validateOTP(record, otp);
   const { error } = await supabase.rpc("verify_user_otp_rpc", {
     p_user_id: user_id,
   });
   if (error) {
-    throw new DatabaseError("Failed to verify OTP", error, "verifyOTP");
+    throw new DatabaseError(
+      "Failed to verify OTP",
+      error,
+      "otpService.verifyOTP",
+    );
   }
   return true;
 };

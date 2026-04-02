@@ -7,13 +7,14 @@ import { InternalServerError } from "@/errors/index.js";
 import { ConflictError } from "@/errors/index.js";
 import { DatabaseError } from "@/errors/index.js";
 import { UserRow } from "@/types/index.js";
-import bcrypt from "bcrypt";
+import { hashPassword } from "@/utils/hashPassword.js";
+import { NotFoundError } from "@/errors/index.js";
 
-const createUser = async (input: CreateUserInput): Promise<UserRow> => {
+export const createUser = async (input: CreateUserInput): Promise<UserRow> => {
   // 1. Validate input
   const validatedInput = validateUserInput(input);
   // 2. Hash password
-  const hashedPassword = await bcrypt.hash(validatedInput.password, 10);
+  const hashedPassword = await hashPassword(validatedInput.password);
 
   // 3. prepare user data
   const userData: UserInsert = {
@@ -61,4 +62,12 @@ const createUser = async (input: CreateUserInput): Promise<UserRow> => {
     }
     throw error;
   }
+};
+
+export const getUserById = async (user_id: string): Promise<UserRow> => {
+  const user = await userModel.getUserByIdentifier(user_id);
+  if (!user) {
+    throw new NotFoundError("User not found", "userService.getUserById");
+  }
+  return user;
 };
