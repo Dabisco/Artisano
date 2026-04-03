@@ -4,6 +4,15 @@ export interface CreateUserInput {
   password: string;
   email: string;
   role: "artisan" | "client" | "admin";
-  full_name: string;
+  first_name: string;
+  surname: string;
+  other_names?: string;
   lga_id?: number;
 }
+
+export type SafeUser = {
+  id: string;
+  email: string;
+  username: string;
+  role: string;
+};

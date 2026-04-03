@@ -38,12 +38,16 @@ begin
 
         insert into artisan_profiles (
             user_id,
-            full_name,
+            first_name,
+            other_names,
+            surname,
             lga_id
         )
         values (
             new_user.id,
-            profile_data->>'full_name',
+            profile_data->>'first_name',
+            profile_data->>'other_names',
+            profile_data->>'surname',
             (profile_data->>'lga_id')::int
         );
 
@@ -51,11 +55,15 @@ begin
 
         insert into client_profiles (
             user_id,
-            full_name
+            first_name,
+            other_names,
+            surname
         )
         values (
             new_user.id,
-            profile_data->>'full_name'
+            profile_data->>'first_name',
+            profile_data->>'other_names',
+            profile_data->>'surname'
         );
 
     elsif (user_data->>'role') = 'admin' then

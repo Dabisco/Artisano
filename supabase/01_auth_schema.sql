@@ -68,7 +68,9 @@ CREATE TABLE public.skills (
 CREATE TABLE public.artisan_profiles (
     id UUID NOT NULL PRIMARY KEY DEFAULT uuid_generate_v4(),
     user_id UUID NOT NULL UNIQUE REFERENCES public.users(id) ON DELETE CASCADE, -- If the User is deleted, their Artisan Profile is automatically deleted too. The UNIQUE constraint ensures one user = ONE profile.
-    full_name VARCHAR(255) NOT NULL, -- The name clients will see when searching or viewing an artisan
+    first_name VARCHAR(100) NOT NULL,
+    surname VARCHAR(100) NOT NULL,
+    other_names VARCHAR(100),
     lga_id INTEGER NOT NULL REFERENCES public.lgas(id), -- Links directly to the exact Local Government Area
     bio TEXT, -- Optional description of their experience
     availability_status VARCHAR(20) NOT NULL DEFAULT 'available' CHECK (availability_status IN ('available', 'busy', 'offline')), -- Allows artisans to toggle if they are taking new jobs
@@ -97,7 +99,9 @@ CREATE TABLE public.artisan_skills (
 CREATE TABLE public.client_profiles (
     id UUID NOT NULL PRIMARY KEY DEFAULT uuid_generate_v4(),     
     user_id UUID NOT NULL UNIQUE REFERENCES public.users(id) ON DELETE CASCADE, -- Exact same logic as Artisan Profiles.
-    full_name VARCHAR(255) NOT NULL, -- The name artisans will see when receiving a job request
+    first_name VARCHAR(100) NOT NULL,
+    surname VARCHAR(100) NOT NULL,
+    other_names VARCHAR(100),
     created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );

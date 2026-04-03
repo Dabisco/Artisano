@@ -33,12 +33,16 @@ export const createUser = async (input: CreateUserInput): Promise<UserRow> => {
 
   if (validatedInput.role === "artisan") {
     profileData = {
-      full_name: validatedInput.full_name,
+      first_name: validatedInput.first_name,
+      other_names: validatedInput.other_names,
+      surname: validatedInput.surname,
       lga_id: validatedInput.lga_id,
     };
   } else {
     profileData = {
-      full_name: validatedInput.full_name,
+      first_name: validatedInput.first_name,
+      other_names: validatedInput.other_names,
+      surname: validatedInput.surname,
     };
   }
 

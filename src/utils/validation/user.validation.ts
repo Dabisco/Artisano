@@ -3,13 +3,34 @@ import { ValidationError } from "@/errors/index.js";
 
 type FieldError = {
   field: string;
-  value: string;
+  value?: string;
   issue: string;
 };
 
 /**
  * Validation utilities for user input
  */
+
+/**
+ * sanitize name
+ */
+
+export const sanitizeName = (name: string | undefined): string | undefined => {
+  if (!name) return undefined;
+  const clean = name.trim();
+  const normalized = clean.replace(/\s+/g, " ");
+  return normalized;
+};
+
+/**
+ * Validate name
+ */
+
+export const isValidName = (name: string | undefined): boolean => {
+  if (!name) return false;
+  const nameRegex = /^[a-zA-ZÀ-ÿ' -]+$/;
+  return nameRegex.test(name);
+};
 
 /**
  * Sanitize Phone number (remove spaces, dash)
@@ -97,8 +118,48 @@ export const validateUserInput = (input: CreateUserInput): CreateUserInput => {
   const phone_number = sanitizePhoneNumber(input.phone_number);
   const username = sanitizeUsername(input.username);
   const email = sanitizeEmail(input.email);
+  const first_name = sanitizeName(input.first_name);
+  const surname = sanitizeName(input.surname);
+  const other_names = sanitizeName(input.other_names);
 
   const errors: FieldError[] = [];
+
+  if (!first_name) {
+    errors.push({
+      field: "first_name",
+      value: first_name,
+      issue: "First name is required",
+    });
+  } else if (!isValidName(first_name)) {
+    errors.push({
+      field: "first_name",
+      value: first_name,
+      issue: "Must be a valid name",
+    });
+  }
+
+  if (!surname) {
+    errors.push({
+      field: "surname",
+      value: surname,
+      issue: "Surname is required",
+    });
+  } else if (!isValidName(surname)) {
+    errors.push({
+      field: "surname",
+      value: surname,
+      issue: "Must be a valid name",
+    });
+  }
+
+  if (other_names && !isValidName(other_names)) {
+    errors.push({
+      field: "other_names",
+      value: other_names,
+      issue: "Must be a valid name",
+    });
+  }
+
   if (!isValidNigerianPhone(phone_number)) {
     errors.push({
       field: "phone_number",
@@ -152,5 +213,8 @@ export const validateUserInput = (input: CreateUserInput): CreateUserInput => {
     phone_number,
     username,
     email,
+    first_name: first_name as string,
+    surname: surname as string,
+    other_names,
   };
 };
