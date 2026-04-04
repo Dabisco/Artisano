@@ -4,6 +4,7 @@ import { verifyJWT } from "@/middleware/verifyJWT.js";
 import { verifiedUserCheck } from "@/middleware/verifiedUserMiddleware.js";
 import { verifyEmail } from "@/controllers/authController.js";
 import { login } from "@/controllers/authController.js";
+import { resendOTPController } from "@/controllers/authController.js";
 
 const router = Router();
 
@@ -14,5 +15,8 @@ router.post("/register", register);
 router.post("/login", login);
 // POST /api/auth/verify-email
 router.post("/verify-email", verifyJWT, verifyEmail);
+
+// POST /api/auth/resend-otp
+router.post("/resend-otp", verifyJWT, resendOTPController);
 
 export default router;

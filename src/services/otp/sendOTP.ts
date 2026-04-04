@@ -6,12 +6,9 @@ import { verificationModel } from "@/models/verificationModel.js";
 import { EmailVerificationInsert } from "@/types/index.js";
 
 export const sendOTP = async (user_id: string) => {
-  const user = await userModel.getUserByIdentifier(user_id);
+  const user = await userModel.getUserById(user_id);
   if (!user) {
-    throw new InternalServerError(
-      "User not found",
-      "userModel.getUserByIdentifier",
-    );
+    throw new InternalServerError("User not found", "userModel.getUserById");
   }
   const otp = generateOTP();
   const hashedOTP = hashToken(otp);

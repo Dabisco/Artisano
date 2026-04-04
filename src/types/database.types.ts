@@ -183,7 +183,7 @@ export type Database = {
       };
       email_verifications: {
         Row: {
-          created_at: string | null;
+          created_at: string;
           expires_at: string;
           id: string;
           token_hash: string;
