@@ -9,6 +9,9 @@ import { DatabaseError } from "@/errors/index.js";
 import { UserRow } from "@/types/index.js";
 import { hashPassword } from "@/utils/hashPassword.js";
 import { NotFoundError } from "@/errors/index.js";
+import { isUUID } from "@/utils/helpers/identifierCheck.js";
+import { isPhone } from "@/utils/helpers/identifierCheck.js";
+import { isEmail } from "@/utils/helpers/identifierCheck.js";
 
 export const createUser = async (input: CreateUserInput): Promise<UserRow> => {
   // 1. Validate input
@@ -68,10 +71,26 @@ export const createUser = async (input: CreateUserInput): Promise<UserRow> => {
   }
 };
 
-export const getUserById = async (user_id: string): Promise<UserRow> => {
-  const user = await userModel.getUserByIdentifier(user_id);
-  if (!user) {
-    throw new NotFoundError("User not found", "userService.getUserById");
+export const getUserByIdentifier = async (
+  identifier: string,
+): Promise<UserRow> => {
+  let user = null;
+  if (isUUID(identifier)) {
+    user = await userModel.getUserById(identifier);
+  } else if (isPhone(identifier)) {
+    user = await userModel.getUserByPhone(identifier);
+  } else if (isEmail(identifier)) {
+    user = await userModel.getUserByEmail(identifier);
+  } else {
+    user = await userModel.getUserByUsername(identifier);
   }
+
+  if (!user) {
+    throw new NotFoundError(
+      "User not found",
+      "userService.getUserByIdentifier",
+    );
+  }
+
   return user;
 };

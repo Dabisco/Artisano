@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import { UnauthorizedError } from "@/errors/client.errors.js";
-import { getUserById } from "@/services/userService.js";
+import { getUserByIdentifier } from "@/services/userService.js";
 
 export const verifiedUserCheck = async (
   req: Request,
@@ -14,7 +14,7 @@ export const verifiedUserCheck = async (
     throw new UnauthorizedError("Unauthorized", "middlewareverifiedUserCheck");
   }
 
-  const user = await getUserById(user_id);
+  const user = await getUserByIdentifier(user_id);
   if (!user.email_verified) {
     throw new UnauthorizedError(
       "Please verify your email address to continue",
