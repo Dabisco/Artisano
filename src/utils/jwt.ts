@@ -1,7 +1,9 @@
 import jwt, { SignOptions } from "jsonwebtoken";
+import { validateEnv } from "@/config/env.js";
 
-const JWT_SECRET =
-  process.env.JWT_SECRET || "fallback-secret-do-not-use-in-production";
+const env = validateEnv(process.env);
+
+const JWT_SECRET = env.JWT_SECRET;
 
 export interface JwtPayload {
   userId: string;

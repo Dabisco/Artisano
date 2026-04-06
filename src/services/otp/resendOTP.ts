@@ -14,7 +14,7 @@ export const resendOTP = async (user_id: string): Promise<void> => {
   // check if user is verified
   if (user.email_verified) {
     throw new BadRequestError(
-      "User is already verified",
+      "User is already verified!",
       "otpService.resendOTP",
     );
   }

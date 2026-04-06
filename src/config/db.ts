@@ -1,18 +1,12 @@
-import { createClient } from '@supabase/supabase-js';
-import dotenv from 'dotenv';
+import { createClient } from "@supabase/supabase-js";
+import { validateEnv } from "./env.js";
 
-// Load environment variables from the .env file
-dotenv.config();
-
-// Ensure the required environment variables are present before proceeding
-const supabaseUrl = process.env.SUPABASE_URL;
-const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
-
-if (!supabaseUrl || !supabaseKey) {
-  throw new Error('Missing Supabase credentials in .env file');
-}
+const env = validateEnv(process.env);
 
 // Initialize the Supabase client
-// We use the SERVICE_ROLE_KEY because this backend needs admin-level access 
+// We use the SERVICE_ROLE_KEY because this backend needs admin-level access
 // (e.g., to verify OTPs or manipulate tables securely)
-export const supabase = createClient(supabaseUrl, supabaseKey);
+export const supabase = createClient(
+  env.SUPABASE_URL,
+  env.SUPABASE_SERVICE_ROLE_KEY,
+);
